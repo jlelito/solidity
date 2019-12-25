@@ -1,0 +1,110 @@
+{
+  "contractName": "SimpleSmartContract",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3fe6080604052600080fdfea165627a7a723058202d98ea441cdf8c0b93c1b8c5d3808a2b285984dcc636d4fbf7bba31616c63f650029",
+  "deployedBytecode": "0x6080604052600080fdfea165627a7a723058202d98ea441cdf8c0b93c1b8c5d3808a2b285984dcc636d4fbf7bba31616c63f650029",
+  "sourceMap": "25:31:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:31:1;;;;;;;",
+  "deployedSourceMap": "25:31:1:-;;;;;",
+  "source": "pragma solidity ^0.5.0;\n\ncontract SimpleSmartContract {}\n",
+  "sourcePath": "C:/Users/Josh/Desktop/30Dapps/day1-simple-smart-contract/frontend/start/contracts/SimpleSmartContract.sol",
+  "ast": {
+    "absolutePath": "/C/Users/Josh/Desktop/30Dapps/day1-simple-smart-contract/frontend/start/contracts/SimpleSmartContract.sol",
+    "exportedSymbols": {
+      "SimpleSmartContract": [
+        59
+      ]
+    },
+    "id": 60,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 58,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 59,
+        "linearizedBaseContracts": [
+          59
+        ],
+        "name": "SimpleSmartContract",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 60,
+        "src": "25:31:1"
+      }
+    ],
+    "src": "0:57:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/Josh/Desktop/30Dapps/day1-simple-smart-contract/frontend/start/contracts/SimpleSmartContract.sol",
+    "exportedSymbols": {
+      "SimpleSmartContract": [
+        59
+      ]
+    },
+    "id": 60,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 58,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 59,
+        "linearizedBaseContracts": [
+          59
+        ],
+        "name": "SimpleSmartContract",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 60,
+        "src": "25:31:1"
+      }
+    ],
+    "src": "0:57:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {
+    "4447": {
+      "events": {},
+      "links": {},
+      "address": "0xE675644F147b69A151f62E01578429bf06c67820",
+      "transactionHash": "0xf90391b8cf675534456e2f3f27ba1c9ec4a91554bf642adfa4694aae42a73840"
+    }
+  },
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-12-01T23:18:06.529Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
