@@ -47,6 +47,7 @@ function App() {
     init();
     window.ethereum.on('accountsChanged', accounts => {
       setAccounts(accounts);
+      window.location.reload();
     });
   }, []);
 
@@ -60,12 +61,24 @@ function App() {
   }
 
   async function updateState() {
+    const currentState =  parseInt(await contract.methods.state().call());
+    setLoan({...loan, currentState});
+    window.location.reload();
+
   }
 
   async function fund() {
+    await contract.methods.fund().send({from: loan.lender, value: loan.amount});
+    await updateState();
   };
 
   async function reimburse() {
+    
+    const newAmount = web3.utils.toBN(loan.amount);
+    const newInterest = web3.utils.toBN(loan.interest);
+    
+    await contract.methods.reimburse().send({from: loan.borrower, value: newAmount.add(newInterest)});
+    await updateState();
   };
 
   function isFinished() {
@@ -82,15 +95,15 @@ function App() {
     <div className="container">
       <h1 className="text-center">Loan State Machine</h1>
 
-      <p>Borrower: </p>
-      <p>Lender: </p>
-      <p>Amount: </p>
-      <p>Interest: </p>
-      <p>DurationI: loan.duration} Wei</p>
-      //Make it visible only when loan is pending
-      <p>End: </p>
-      <p>State: </p>
-
+      <p>Borrower: {loan.borrower} </p>
+      <p>Lender: {loan.lender}</p>
+      <p>Amount: {web3.utils.fromWei(loan.amount, 'Ether')} Ether</p>
+      <p>Interest: {web3.utils.fromWei(loan.interest, 'Ether')} Ether/month </p>
+      <p>Duration: {loan.duration} Seconds</p>
+      
+      <p>End: {(new Date(parseInt(loan.end) * 1000)).toLocaleString()} </p>
+      <p>State: {states[loan.state]}</p>
+      {loan.state === 0  && accounts[0].toLowerCase() == loan.lender.toLowerCase() ? 
       //make it visible only for lender and when state is pending
       <div className="row">
         <div className="col-sm-12">
@@ -104,11 +117,13 @@ function App() {
             </button>
         </div>
       </div>
+      : null}
 
+      {loan.state == 1  && isFinished() && accounts[0].toLowerCase() == loan.borrower.toLowerCase() ? 
       //make it visible only for borrower, when state is active, and when loan is finsihed
        <div className="row">
          <div className="col-sm-12">
-           <h2>Reimburse Wei (principal) + Wei (interest)</h2>
+            <h2>Reimburse Wei {loan.amount} + Wei {loan.interest}</h2>
              <button 
                onClick={e => reimburse()}
                type="submit" 
@@ -118,6 +133,7 @@ function App() {
              </button>
          </div>
        </div>
+        : null}
     </div>
   );
 }
