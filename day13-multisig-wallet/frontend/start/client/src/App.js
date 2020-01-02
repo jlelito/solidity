@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     const init = async () => {
       const web3 = await getWeb3();
+      
       const accounts = await web3.eth.getAccounts();
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = Multisig.networks[networkId];
@@ -21,7 +22,7 @@ function App() {
         deployedNetwork && deployedNetwork.address,
       );
       const quorum = await contract.methods.quorum().call();
-
+      
       setWeb3(web3);
       setAccounts(accounts);
       setContract(contract);
@@ -38,6 +39,7 @@ function App() {
       console.log("Updating balance and transfers");
       updateBalance();
       updateCurrentTransfer();
+      document.getElementById("accountNow").innerHTML = "Current Account: <br>"+ accounts[0];
     }
   },[accounts, contract, web3]);
 
@@ -78,7 +80,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="text-center">Multisig</h1>
-
+  <h2 id="accountNow">Current Accounts: </h2>
       <div className="row">
         <div className="col-sm-12">
            <p>Balance: <b>{balance}</b> wei </p>
