@@ -112,7 +112,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="text-center">Voting</h1>
-
+  <h2 id="currentAccount">Current Account: {accounts[0]}</h2>
       {accounts[0].toLowerCase() === admin.toLowerCase() ? (
       <>
       <div className="row">
