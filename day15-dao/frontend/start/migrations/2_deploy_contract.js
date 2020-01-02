@@ -1,7 +1,7 @@
 const DAO = artifacts.require("DAO");
 
 module.exports = async function(deployer, _network, accounts) {
-  await deployer.deploy(DAO, 2, 500, 2);
+  await deployer.deploy(DAO, 500, 500, 2);
   const dao = await DAO.deployed();
   await Promise.all([
     dao.contribute({from: accounts[1], value: 100}),
