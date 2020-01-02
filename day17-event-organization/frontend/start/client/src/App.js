@@ -7,6 +7,7 @@ function App() {
   const [accounts, setAccounts] = useState(undefined);
   const [contract, setContract] = useState(undefined);
   const [events, setEvents] = useState([]);
+  const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
     const init = async () => {
@@ -39,7 +40,9 @@ function App() {
 
   useEffect(() => {
     if(isReady()) {
+      console.log(accounts[0]);
       updateEvents();
+      updateTickets();
     }
   }, [accounts, contract, web3]);
 
@@ -55,14 +58,29 @@ function App() {
       events.push(contract.methods.events(i).call())
     }
     setEvents(await Promise.all(events));
+    await updateTickets();
+  }
+
+  async function updateTickets() {
+    const nextId = parseInt(await contract.methods
+      .nextId()
+      .call());
+
+    const tickets = [];
+    for(let i = 0; i < nextId; i++) { 
+      tickets.push(contract.methods.tickets(accounts[0], i).call());
+    }
+    
+    setTickets(await Promise.all(tickets));
   }
 
   async function transferTicket(e) {
     e.preventDefault();
+    console.log("transferring tickets");
     const eventId = e.target.elements[0].value;
     const amount = e.target.elements[1].value;
     const to = e.target.elements[2].value;
-    await contract.methods.transferTicket(eventId, amount, to);
+    await contract.methods.transferTicket(eventId, amount, to).send({from: accounts[0]});
     await updateEvents();
   };
 
@@ -170,6 +188,7 @@ function App() {
                 <th>Ticket remaining</th>
                 <th>Total tickets</th>
                 <th>Buy</th>
+                <th>Number of tickets owned</th>
               </tr>
             </thead>
             <tbody>
@@ -195,6 +214,7 @@ function App() {
                       </form>
                     )}
                   </td>
+                    <td>{tickets[event.id]}</td>
                 </tr>
               ))}
             </tbody>
