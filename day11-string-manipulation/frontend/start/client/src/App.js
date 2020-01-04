@@ -1,26 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { getWeb3 } from './utils.js';
 import Strings from './contracts/Strings.json';
+import { getWeb3 } from './utils.js';
+
 
 function App() {
   const [web3, setWeb3] = useState(undefined);
   const [contract, setContract] = useState(undefined);
+  const [accounts, setAccounts] = useState(undefined);
   const [length, setLength] = useState(undefined);
   const [concatenation, setConcatenation] = useState(undefined);
 
 
   useEffect(() => {
     const init = async () => {
+      
       const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
 
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = Strings.networks[networkId];
       const contract = new web3.eth.Contract(Strings.abi, deployedNetwork && deployedNetwork.address);
       setWeb3(web3);
+      setAccounts(accounts);
       setContract(contract);
     }
     init();
+    window.ethereum.on('accountsChanged', accounts => {
+      setAccounts(accounts);
+    });
   }, []);
+
+  useEffect (() => {
+    if(isReady()){
+      
+      
+    }
+  }, [accounts, contract, web3]);
 
   async function calculateLength(e){
     e.preventDefault();
@@ -37,14 +52,23 @@ function App() {
 
 
 
-  if (!web3) {
+  const isReady = () => {
+    return (
+      typeof contract !== 'undefined' 
+      && typeof web3 !== 'undefined'
+      
+      
+    );
+  }
+
+  if (!isReady()) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="container">
       <h1 className="text-center">String manipulation</h1>
-
+      <p>Current Account: {accounts[0]}</p>
       <div className="row">
         <div className="col-sm-12">
           <h2>Length</h2>
