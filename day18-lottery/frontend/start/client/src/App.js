@@ -100,7 +100,7 @@ function App() {
 
   async function doBet() {
     
-    await contract.methods.bet().send({from: accounts[0], value:bet.size});
+    await contract.methods.bet().send({from: accounts[0], value: bet.size});
     await updateBet();
     await updatePlayers();
     await updateWinners();
@@ -114,14 +114,14 @@ function App() {
     <div className="container">
       <h1 className="text-center">Lottery</h1>
 
-      <p>House Fee: {houseFee}</p>
+      <p>House Fee: {houseFee}% of Bet</p>
       <p>State: {states[bet.state]}</p>
       {bet.state === 1 ? (
         <>
-          <p>Bet size: {bet.size}</p>
-          <p>Bet count: {bet.count}</p>
+          <p>Bet Size: {bet.size} Wei</p>
+          <p>Player Count: {bet.count}</p>
           <div>
-            <h2>Players</h2>
+            <h2>Players in Bet</h2>
             <ul>
               {players.map(player => <li key={player}>{player}</li>)}
             </ul>
@@ -129,17 +129,17 @@ function App() {
         </>
       ) : null}
 
-      {bet.state === 0 ? (
+      {bet.state === 0  ? (
         <div className="row">
           <div className="col-sm-12">
             <h2>Create bet</h2>
             <form onSubmit={e => createBet(e)}>
               <div className="form-group">
-                <label htmlFor="count">Bet Count (players)</label>
+                <label htmlFor="count">Player Count</label>
                 <input type="text" className="form-control" id="count" />
               </div>
               <div className="form-group">
-                <label htmlFor="size">Bet Size (ETH)</label>
+                <label htmlFor="size">Bet Size (Wei)</label>
                 <input type="text" className="form-control" id="size" />
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
@@ -147,6 +147,21 @@ function App() {
           </div>
         </div>
       ) : null}
+
+        {bet.state === 1 ? (
+            <div className="row">
+              <div className="col-sm-12">
+                <h2>Bet</h2>
+                  <button 
+                    onClick={e => doBet()}
+                    type="submit" 
+                    className="btn btn-primary"
+                  >
+                    Bet
+                  </button>
+              </div>
+            </div>
+          ) : null}
 
       {bet.state === 1 
        && accounts[0].toLowerCase() === bet.admin.toLowerCase() ? (
@@ -164,20 +179,7 @@ function App() {
         </div>
       ) : null}
 
-      {bet.state === 1 ? (
-        <div className="row">
-          <div className="col-sm-12">
-            <h2>Bet</h2>
-              <button 
-                onClick={e => doBet()}
-                type="submit" 
-                className="btn btn-primary"
-              >
-                Bet
-              </button>
-          </div>
-        </div>
-      ) : null}
+      
       <p>Past Winners of Bets</p>
         <ul>
               {winners.map(winner => <li>{winner}</li>)}
