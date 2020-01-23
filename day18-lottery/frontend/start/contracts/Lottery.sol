@@ -6,7 +6,7 @@ contract Lottery {
         BETTING
     }
 
-    event LottoEnded(address winner);
+    event LottoEnded(address winner, uint prize, uint players);
 
     address payable[] public players;
     State public currentState = State.IDLE;
@@ -34,8 +34,8 @@ contract Lottery {
     
     function createBet(uint count, uint size) 
         external 
-        inState(State.IDLE) 
-        onlyAdmin() {
+        inState(State.IDLE)  {
+        require(count > 1, 'Bet must have more than 1 player');
         betCount = count;
         betSize = size;
         currentState = State.BETTING;
@@ -51,7 +51,7 @@ contract Lottery {
             uint winner = _randomModulo(betCount);
             players[winner].transfer((betSize * betCount) * (100 - houseFee) / 100);
             currentState = State.IDLE;
-            emit LottoEnded(players[winner]);
+            emit LottoEnded(players[winner], (betSize * betCount) * (100 - houseFee) / 100, players.length);
             delete players;
         }
     }
