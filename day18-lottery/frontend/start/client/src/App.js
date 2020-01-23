@@ -77,7 +77,11 @@ function App() {
     const winners = await contract.getPastEvents('LottoEnded', {fromBlock: 0});
     let newWinners = [];
     for(let i=0; i<winners.length; i++){
-      newWinners.push(winners[i].returnValues.winner);
+      newWinners.push([
+         winners[i].returnValues.winner,
+         winners[i].returnValues.prize,
+         winners[i].returnValues.players
+        ]);
     }
     setWinners(newWinners);
   }
@@ -111,11 +115,21 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <h1 className="text-center">Lottery</h1>
+    <div className="container text-center">
+      <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+          
+        <ul className="navbar-nav px-3">
+          <li className = "nav-item text-nowrap d-none d-sm-none d-sm-block">
+            <small className="text-secondary">
+              <small id="account" className="text-white text-right">Current Account: {accounts[0]}</small>
+            </small>
+          </li>
+        </ul>
+      </nav>
+      <h1 className="text-center mt-5">Lottery</h1>
 
       <p>House Fee: {houseFee}% of Bet</p>
-      <p>State: {states[bet.state]}</p>
+      <p>State of Bet: <b>{states[bet.state]}</b></p>
       {bet.state === 1 ? (
         <>
           <p>Bet Size: {bet.size} Wei</p>
@@ -149,7 +163,7 @@ function App() {
       ) : null}
 
         {bet.state === 1 ? (
-            <div className="row">
+            <div className="row text-center">
               <div className="col-sm-12">
                 <h2>Bet</h2>
                   <button 
@@ -180,10 +194,12 @@ function App() {
       ) : null}
 
       
-      <p>Past Winners of Bets</p>
-        <ul>
-              {winners.map(winner => <li>{winner}</li>)}
-        </ul>
+      <p><b>Past Winners of Bets</b></p>
+        <ol>
+              {winners.map(winner => <li key={winner}><b>Winner</b> : {winner[0]}
+               <p>Prize: {winner[1]} Wei</p>
+               <p>Number of Players: {winner[2]}</p></li>)}
+        </ol>
     </div>
   );
 }
