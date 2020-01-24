@@ -46,6 +46,11 @@ contract Lottery {
         payable 
         inState(State.BETTING) {
         require(msg.value == betSize, 'can only bet exactly the bet size');
+        for(uint i = 0; i < players.length; i++) {
+            if(players[i] == msg.sender){
+                require(players[i] != msg.sender, 'Can only bet once in a bet');
+            }
+        }
         players.push(msg.sender);
         if(players.length == betCount ) {
             uint winner = _randomModulo(betCount);
